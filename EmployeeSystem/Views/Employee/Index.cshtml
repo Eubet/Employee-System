@@ -1,0 +1,386 @@
+﻿@model EmployeeSystem.Data.ViewModels.EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<!--Reverse Engineer-->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin - Tables</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Page level plugin CSS-->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Employees</h2>
+            <p>
+                <a id="CallCreateModal" href="#newEmployee" data-toggle="modal">Create New</a>
+            </p>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th hidden>ID</th>
+                            <th>Employee ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Date Of Birth</th>
+                            <th>Hire Date</th>
+                            <th>Email</th>
+                            <th>Region</th>
+                            <th>Role</th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th hidden>ID</th>
+                            <th>Employee ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Date Of Birth</th>
+                            <th>Hire Date</th>
+                            <th>Email</th>
+                            <th>Region</th>
+                            <th>Role</th>
+                            <th></th>
+
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var employee in Model.Employees)
+                        {
+                            if (employee.IsActive == true)
+                            {
+                                <tr id="row_@employee.EmployeeId">
+                                    <td hidden>@employee.EmployeeId</td>
+                                    <td>@employee.EmpNum</td>
+                                    <td>@employee.FirstName</td>
+                                    <td>@employee.LastName</td>
+                                    <td>@employee.Dob</td>
+                                    <td>@employee.EmployedOn</td>
+                                    <td>@employee.Email</td>
+                                    <td>@employee.Region.RegionName</td>
+                                    <td>
+                                        @if (@employee.Supervisor != null)
+                                        {
+                                            @*@employee.Supervisor.FirstName <span></span>
+
+            @employee.Supervisor.LastName;*@
+                                            <span>Surbodinate</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Supervisor</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@employee.EmployeeId">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@employee.EmployeeId">Details</a> |
+                                        @* <a id="CallDeleteModal" href="#MyModal" data-toggle="modal">Delete</a>*@
+                                        <a id="CallDeleteModal" href="#" onclick="deleteEmployee(@employee.EmployeeId);">Delete</a>
+
+                                    </td>
+                                </tr>
+
+
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="card-footer small text-muted">@DateTime.Now</div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Page level plugin JavaScript-->
+    <script src="~/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/js/sb-admin.min.js"></script>
+
+    <!-- Demo scripts for this page-->
+    <script src="~/js/demo/datatables-demo.js"></script>
+</body>
+<!--Reverse Engineer ends-->
+<!-- Page level plugin CSS-->
+<link href="~/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+<style>
+
+    .no-js #loader {
+        display: none;
+    }
+
+    .js #loader {
+        display: block;
+        position: absolute;
+        left: 100px;
+        top: 0;
+    }
+
+    .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url(/ajax-save.gif) center no-repeat #fff;
+    }
+</style>
+<div class="se-pre-con" style="visibility:hidden; opacity:0.7;"></div>
+
+@*<div class="card shadow mb-3">
+    <div class="card-header">
+        <p>
+            <a id="CallCreateModal" href="#newEmployee" data-toggle="modal">Create New</a>
+        </p>
+        @*<h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>*@
+@*</div>*@
+
+@*<div class="card-body">
+            <div class="table-responsive ">
+                <table id="employeeTable" class="table table-striped table-bordered " width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th hidden>ID</th>
+                            <th>Employee ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Date Of Birth</th>
+                            <th>Hire Date</th>
+                            <th>Email</th>
+                            <th>Region</th>
+                            <th>Supervisor Name</th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th hidden>ID</th>
+                            <th>Employee ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Date Of Birth</th>
+                            <th>Hire Date</th>
+                            <th>Email</th>
+                            <th>Region</th>
+                            <th>Supervisor Name</th>
+                            <th></th>
+
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var employee in Model.Employees)
+                        {
+                            if (employee.IsActive == true)
+                            {
+                                <tr id="row_@employee.EmployeeId">
+                                    <td hidden>@employee.EmployeeId</td>
+                                    <td>@employee.EmpNum</td>
+                                    <td>@employee.FirstName</td>
+                                    <td>@employee.LastName</td>
+                                    <td>@employee.Dob</td>
+                                    <td>@employee.EmployedOn</td>
+                                    <td>@employee.Email</td>
+                                    <td>@employee.Region.RegionName</td>
+                                    <td>
+                                        @if (@employee.Supervisor != null)
+                                        {
+                                            @employee.Supervisor.FirstName <span></span>
+
+                                            @employee.Supervisor.LastName;
+
+                                        }
+                                        else
+                                        {
+                                            <span>Supervisor</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@employee.EmployeeId">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@employee.EmployeeId">Details</a> |
+                                        @* <a id="CallDeleteModal" href="#MyModal" data-toggle="modal">Delete</a>
+                                        <a id="CallDeleteModal" href="#" onclick="deleteEmployee(@employee.EmployeeId);">Delete</a>
+
+                                    </td>
+                                </tr>
+
+
+
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <div class="card-footer small text-muted">@DateTime.Now</div>
+    </div>*@
+
+<!--Modal for create Starts-->
+<partial name="AddEmployeePartialView" />
+
+<!--Modal ends-->
+<!--Scripts begin-->
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7/dist/sweetalert2.all.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Page level plugin JavaScript-->
+    <script src="~/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Demo scripts for this page-->
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <script src="~/js/demo/chart-area-demo.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/js/sb-admin-2.js"></script>
+
+
+    <script>
+        //start add employee ajax
+        $('#employeeAddForm').submit(function (e) {
+            e.preventDefault();
+            console.log("Clicked");
+            //alert("okay");
+            $.ajax({
+                url: '/Employee/AddEmployee',
+                type: 'post',
+                dataType: 'json',
+                data: $('#employeeAddForm').serialize(),
+
+                error: function (xhr) {
+                    console.log(xhr.status);
+                    alert("Ooooops! something went wrong!!")
+                },
+
+                success: function (response) {
+                    console.log(response.value)
+                    if (response.key) {
+                        swal({
+                            title: "Success",
+                            text: response.value,
+                            html: true,
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#06ba63",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        })
+                            .then(() => {
+                                window.location.reload()
+                            });
+                    }
+                    else {
+                        swal("Error!", response.value, "error");
+                    }
+                }
+            });
+        }
+        );
+        //End add employee ajax}
+    </script>
+}
+<script type="text/javascript">
+        function deleteEmployee(employeeId) {
+            $(function () {
+                swal({
+                    title: "Are you sure?",
+                    text: "You want to delete this account!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, I am sure!',
+                    cancelButtonText: "No, cancel it!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }).then((result) => {
+                    if (result.value) {
+                         $.ajax({
+                             url: '@Url.Action("Delete", "Employee")',
+                             data: { EmployeeId: employeeId },
+                             type: 'post',
+                             dataType: 'json',
+                             success: function (response) {
+                                 if (response.key) {
+                                     swal({
+                                         title: "Success",
+                                         text: response.value,
+                                         type: "success",
+                                         showCancelButton: false,
+                                         confirmButtonColor: "#06ba63",
+                                         confirmButtonText: "OK",
+                                         closeOnConfirm: true
+                                     })
+                                         .then(() => {
+                                             window.location.reload();
+                                         });
+                                 }
+                                 else {
+                                     swal({
+                                         title: "Error",
+                                         text: response.value,
+                                         type: "error",
+                                         showCancelButton: false,
+                                         confirmButtonColor: "#06ba63",
+                                         confirmButtonText: "OK",
+                                         closeOnConfirm: true
+                                     });
+                                 }
+                             }
+                          });
+                    } else {
+                        swal({
+                            title: "Cancelled!",
+                            text: "You cancelled deletion process.",
+                            icon: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+        }
+</script>
+

@@ -1,0 +1,166 @@
+﻿@model EmployeeSystem.Data.ViewModels.EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <table class="col-md-10">
+                <tr>
+                    <td>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Employee.EmployeeId" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label style="font-weight: normal;">Title</label>
+                            <select asp-for="Employee.TitleId" asp-items="Model.Titles" required class="form-control" style="width:100px; padding-right:5px;">
+                                <option>Select Title</option>
+                                @foreach (var supervisor in Model.TitleList)
+                                {
+
+                                    <option value="@supervisor.TitleId">@supervisor.TitleName</option>
+                                }
+
+                            </select>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="Employee.EmpNum" class="control-label"></label>
+                            <input asp-for="Employee.EmpNum" class="form-control" />
+                            <span asp-validation-for="Employee.EmpNum" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+
+                            <label asp-for="Employee.FirstName" class="control-label"></label>
+                            <input asp-for="Employee.FirstName" class="form-control" />
+                            <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="Employee.LastName" class="control-label"></label>
+                            <input asp-for="Employee.LastName" class="form-control" />
+                            <span asp-validation-for="Employee.LastName" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="Employee.Dob" class="control-label"></label>
+                            <input asp-for="Employee.Dob" class="form-control" />
+                            <span asp-validation-for="Employee.Dob" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="Employee.Email" class="control-label"></label>
+                            <input asp-for="Employee.Email" class="form-control" />
+                            <span asp-validation-for="Employee.Email" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label style="font-weight: normal;">Gender</label>
+                            <select asp-for="Employee.GenderId" asp-items="Model.Genders" required class="form-control" style="width:200px;">
+                                <option>Select Gender</option>
+                                @foreach (var supervisor in Model.GenderList)
+                                {
+
+                                    <option value="@supervisor.GenderId">@supervisor.GenderName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Employee.GenderId" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="Employee.EmployedOn" class="control-label"></label>
+                            <input asp-for="Employee.EmployedOn" class="form-control" />
+                            <span asp-validation-for="Employee.EmployedOn" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label style="font-weight: normal;">Region</label>
+                            <select asp-for="Employee.RegionId" asp-items="Model.Regions" class="form-control" style="width:200px;">
+                                <option>Select Region</option>
+                                @foreach (var supervisor in Model.RegionList)
+                                {
+
+                                    <option value="@supervisor.RegionId">@supervisor.RegionName</option>
+
+
+                                }
+                            </select>
+                        </div>
+
+                    </td>
+
+                    <!--Assign Supervisor-->
+                    <td>
+                            <div class="form-group">
+                                <label style="font-weight: normal;">Assign Supervisor</label>
+                                <select asp-for="Employee.SupervisorId" asp-items="Model.EmployeeSelectList" class="form-control" style="width:200px;">
+                                    <option value=null>Set as Supervisor</option>
+                                    @foreach (var supervisor in Model.Employees)
+                                    {
+
+                                        <option value="@supervisor.EmployeeId">@supervisor.FirstName @supervisor.LastName</option>
+
+
+                                    }
+                                </select>
+
+
+
+                            </div>
+                        </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        @*<div class="editor-label">
+                    @Html.LabelFor(model=>model.Employee.EmployeeId, "Employee")
+                </div>
+                <div class="">
+                     @Html.DropDownList("EmployeeId", "Select a Supervior")
+                    @Html.ValidationMessageFor(model=>model.Employee.EmployeeId)
+
+            </div>*@
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

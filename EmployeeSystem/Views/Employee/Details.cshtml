@@ -1,0 +1,150 @@
+﻿@model EmployeeSystem.Data.ViewModels.EmployeeViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+<div class="card mb-3" style="width:80%; ">
+    <div class="card-header">
+
+        <a asp-action="Index">Back</a>
+        <h2>Details</h2>
+
+    </div>
+    <div class="card-body">
+        <a asp-action="Edit" asp-route-id="@Model.Employee.EmployeeId">Edit</a>
+        <div class="table-responsive">
+            <table width="90%" cellspacing="0">
+                <tr>
+                    <td>
+                        <dt>Employee Number</dt>
+                        <dd>@Html.DisplayFor(model => model.Employee.EmpNum)</dd>
+                    </td>
+                    <td>
+                        <dt>Title</dt>
+                        <dd>@Html.DisplayFor(modal => Model.Employee.Title.TitleName) </dd>
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        <dt>First Name</dt>
+                        <dd>@Html.DisplayFor(modal => Model.Employee.FirstName)</dd>
+                    </td>
+                    <td>
+                        <dt>Last Name</dt>
+                        <dd>@Html.DisplayFor(modal => Model.Employee.LastName)</dd>
+                    </td>
+                    <td>
+                        <dt>Gender</dt>
+                        <dd>@Html.DisplayFor(modal => Model.Employee.Gender.GenderName)</dd>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <dt>Date Of Birth</dt>
+                        <dd>@Html.DisplayFor(modal => Model.Employee.Dob)</dd>
+
+                    </td>
+                    <td>
+                        <dt>
+                            Email
+                        </dt>
+                        <dd>@Html.DisplayFor(modal => Model.Employee.Email)</dd>
+                    </td>
+                    <td>
+                        <dt>Phone</dt>
+                        @if (Model.Employee.PhoneNumber == null)
+                        {
+                            <dd>None</dd>
+                        }
+                        else
+                        {
+                            <dd>@Html.DisplayFor(modal => modal.Employee.PhoneNumber)</dd>}
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <dt>Region</dt>
+                        <dd>@Html.DisplayFor(modal => Model.Employee.Region.RegionName)</dd>
+                    </td>
+                    <td>
+                        <dt>Hire Date</dt>
+                        <dd>@Html.DisplayFor(modal => Model.Employee.EmployedOn)</dd>
+                    </td>
+                    <td>
+                        <dt>Address</dt>
+                        @if (Model.Employee.Address == null)
+                        {
+                            <dd>None</dd>
+                        }
+                        else
+                        {
+                            <dd>@Html.DisplayFor(modal => Model.Employee.Address)</dd>
+                        }
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @if (Model.Employee.SupervisorId != null)
+                        {
+                            <dt>Supervisor Name</dt>
+                            <dd>@Html.DisplayFor(model => model.Employee.Supervisor.FirstName)&nbsp;@Html.DisplayFor(model => model.Employee.Supervisor.LastName)   </dd>
+                        }
+                        else
+                        {
+                            <dt>Subordinates</dt>
+                            foreach (var subordinate in Model.Surbodinates)
+                            {
+                                // if (subordinate.SupervisorId == subordinate.EmployeeId)
+                                // {
+                                <dd>@subordinate.FirstName&nbsp;@subordinate.LastName</dd>
+                                // }
+
+                            }
+
+                        }
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><dt>Audit Information</dt></td>
+                </tr>
+                <tr>
+                    <td>
+                        <dt>Created By</dt>
+                        <dd>@Html.DisplayFor(model => model.Audit.AuditInfo.CreatedBy)</dd>
+                       
+
+                    </td>
+                    <td>
+                        <dt>Created On</dt>
+                        <dd>@Html.DisplayFor(model => model.Audit.AuditInfo.CreatedOn)</dd>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <dt>Updated By</dt>
+                        <dd>@Html.DisplayFor(model => model.Audit.AuditInfo.UpdatedBy)</dd>
+                    </td>
+                    <td>
+                        <dt>Updated On</dt>
+                        <dd>@Html.DisplayFor(model => model.Audit.AuditInfo.UpdatedOn)</dd>
+                    </td>
+
+
+                </tr>
+            </table>
+        </div>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+    <div class="card-footer small text-muted">@DateTime.Now</div>
+</div>
+

@@ -1,0 +1,173 @@
+﻿@model EmployeeSystem.Data.ViewModels.EmployeeViewModel
+
+
+<div class="modal fade" id="newEmployee" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!--Contents-->
+        <div class="modal-content" style="align-content: center;">
+            <div class="modal-header text-md-center">
+                <h3 class="modal-title">Add new Employee</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-10" id="newproductForm">
+
+                        <form class="newEmpForm" role="form" method="post" id="employeeAddForm" style="align-items: center; ">
+
+                            @*<div class="col-md-5 customer-edit">*@
+                            <table class="col-md-12 customer-edit">
+                                <tr>
+                                    <td style="padding:0px 5px 0px 5px;">
+                                        <div class="form-group">
+                                            <label style="font-weight: normal;">Title</label>
+                                            <select asp-for="Employee.TitleId" asp-items="Model.Titles" required class="form-control" style="width:200px; padding-right:5px;">
+                                                <option>Select Title</option>
+                                                @foreach (var supervisor in Model.TitleList)
+                                                {
+
+                                                    <option value="@supervisor.TitleId">@supervisor.TitleName</option>
+                                                }
+
+                                            </select>
+
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <label for="staffNum" style="font-weight: normal;">Employee Number</label>
+
+                                            <input id="staffNum" type="text" asp-for="Employee.EmpNum" placeholder="Staff Number" required class="form-control" style="width:200px;" />
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <td style="padding:0px 5px 0px 5px;">
+                                        <div class="form-group" id="fname">
+                                            <label style="font-weight: normal;">First Name</label>
+                                            <input type="text" asp-for="Employee.FirstName" placeholder="First Name" required class="form-control" style="width:200px;" />
+                                            <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group" id="lname">
+                                            <label style="font-weight: normal;">Last Name</label>
+                                            <input type="text" asp-for="Employee.LastName" placeholder="Last Name" required class="form-control" style="width:200px;" />
+                                            <span asp-validation-for="Employee.LastName" class="text-danger"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="font-weight: normal;"> Date Of Birth</label>
+                                            <input type="date" asp-for="Employee.Dob" placeholder="Date Of Birth" class="form-control" style="width:200px;" />
+                                            <span asp-validation-for="Employee.Dob" class="text-danger"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="font-weight: normal;">Email</label>
+                                            <input type="email" asp-for="Employee.Email" placeholder="eg. johndoe@example.com" class="form-control" style="width:200px;" />
+                                            <span asp-validation-for="Employee.Email" class="text-danger"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label style="font-weight: normal;">Phone Number</label>
+                                        <input type="number" asp-for="Employee.PhoneNumber" placeholder="(000)-(000000)" class="form-control" style="width:200px;" />
+                                        <span asp-validation-for="Employee.PhoneNumber" class="text-danger"></span>
+                                    </td>
+
+                                    <td>
+                                        <label style="font-weight: normal;">Address</label>
+                                        <input type="text" asp-for="Employee.Address" placeholder="" class="form-control" style="width:200px; height:100px;" />
+                                        <span asp-validation-for="Employee.Address" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="font-weight: normal;">Gender</label>
+                                            <select asp-for="Employee.GenderId" asp-items="Model.Genders" required class="form-control" style="width:200px;">
+                                                <option>Select Gender</option>
+                                                @foreach (var supervisor in Model.GenderList)
+                                                {
+
+                                                    <option value="@supervisor.GenderId">@supervisor.GenderName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="font-weight: normal;">Region</label>
+                                            <select asp-for="Employee.RegionId" asp-items="Model.Regions" class="form-control" style="width:200px;">
+                                                <option>Select Region</option>
+                                                @foreach (var supervisor in Model.RegionList)
+                                                {
+
+                                                    <option value="@supervisor.RegionId">@supervisor.RegionName</option>
+
+
+                                                }
+                                            </select>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="font-weight: normal;">Hire Date</label>
+                                            <input type="date" asp-for="Employee.EmployedOn" class="form-control" style="width:200px;" />
+                                            <span asp-validation-for="Employee.EmployedOn" class="text-danger"></span>
+                                        </div>
+                                    </td>
+                                    <!--Assign Supervisor-->
+                                    <td>
+                                        <div class="form-group">
+                                            <label style="font-weight: normal;">Assign Supervisor</label>
+                                            <select asp-for="Employee.SupervisorId" asp-items="Model.EmployeeSelectList" class="form-control" style="width:250px;">
+                                                <option value= null>Set as Supervisor</option>
+                                                @foreach (var supervisor in Model.Employees)
+                                                {
+                                                    <option value="@supervisor.EmployeeId">@supervisor.FirstName @supervisor.LastName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <td>
+                                        <div class="modal-footer ">
+                                            <button class="btn btn-success" type="submit" value="Send">Save</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>

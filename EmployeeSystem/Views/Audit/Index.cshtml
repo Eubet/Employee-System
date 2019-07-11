@@ -1,0 +1,128 @@
+﻿@model EmployeeSystem.Data.ViewModels.AuditViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Audit Log</h2>
+
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Audit Information</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Page level plugin CSS-->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="card mb-3">
+        <div class="card-header">
+            
+            
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th hidden>ID</th>
+                            <th>Record Created By</th>
+                            <th>Created On</th>
+                            <th>Record Updated By</th>
+                            <th>Updated On</th>
+                            <th hidden>Operation</th>
+                            
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th hidden>ID</th>
+                            <th>Record Created By</th>
+                            <th>Created On</th>
+                            <th>Record Updated By</th>
+                            <th>Updated On</th>
+                            <th hidden>Operation</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var audit in Model.AuditList)
+                        {
+                             <tr id="">
+                                 <td hidden>@audit.AuditInfoId</td>
+                                    <td >@audit.CreatedBy</td>
+                                    <td>@audit.CreatedOn</td>
+                                    <td>@audit.UpdatedBy</td>
+                                    <td>@audit.UpdatedOn</td>
+                                    <td hidden>@audit.Operation</td>
+                                </tr>
+
+
+                            
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="card-footer small text-muted">@DateTime.Now</div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Page level plugin JavaScript-->
+    <script src="~/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/js/sb-admin.min.js"></script>
+
+    <!-- Demo scripts for this page-->
+    <script src="~/js/demo/datatables-demo.js"></script>
+</body>
+<!--Reverse Engineer ends-->
+<!-- Page level plugin CSS-->
+<link href="~/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+
+
+<!--Modal ends-->
+<!--Scripts begin-->
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7/dist/sweetalert2.all.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Page level plugin JavaScript-->
+    <script src="~/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Demo scripts for this page-->
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <script src="~/js/demo/chart-area-demo.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/js/sb-admin-2.js"></script>
+    }
+
+
