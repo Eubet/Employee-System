@@ -46,17 +46,17 @@ namespace EmployeeSystem
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             //  services.AddIdentity<ApplicationUser, IdentityRole>()
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             //services.AddIdentityCore<IdentityUser>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
-            //services.AddDefaultIdentity<IdentityUser>()
-            //    .AddEntityFrameworkStores<EmployeeMSContext>();
+          
 
             services.AddScoped(typeof(IdentityUser), typeof(ApplicationUser));
             services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddTransient(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddScoped<EmployeeService>();
+            services.AddScoped<UserService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

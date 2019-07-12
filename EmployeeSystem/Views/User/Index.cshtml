@@ -1,8 +1,10 @@
-﻿@model EmployeeSystem.Data.ViewModels.EmployeeViewModel
-
+﻿@model EmployeeSystem.Data.ViewModels.UserViewModel
 @{
-    ViewData["Title"] = "Employees";
+    ViewData["Title"] = "Index";
 }
+
+<h2>Index</h2>
+
 
 <!--Reverse Engineer-->
 <head>
@@ -13,7 +15,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Tables</title>
+    <title>Users</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -39,14 +41,13 @@
                     <thead>
                         <tr>
                             <th hidden>ID</th>
-                            <th>Employee ID</th>
+                            <th>Username</th>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Date Of Birth</th>
-                            <th>Hire Date</th>
+                            
                             <th>Email</th>
-                            <th>Region</th>
-                            <th>Role</th>
+                            <th>Phone Number</th>
+                           
                             <th></th>
 
                         </tr>
@@ -54,51 +55,34 @@
                     <tfoot>
                         <tr>
                             <th hidden>ID</th>
-                            <th>Employee ID</th>
+                            <th>Username</th>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Date Of Birth</th>
-                            <th>Hire Date</th>
-                            <th>Email</th>
-                            <th>Region</th>
-                            <th>Role</th>
-                            <th></th>
 
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th hidden>IsActive</th>
+                            <th></th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach (var employee in Model.Employees)
+                        @foreach (var user in Model.Users)
                         {
-                            if (employee.IsActive == true)
+                            if (user.IsActive == true)
                             {
-                                <tr id="row_@employee.EmployeeId">
-                                    <td hidden>@employee.EmployeeId</td>
-                                    <td>@employee.EmpNum</td>
-                                    <td>@employee.FirstName</td>
-                                    <td>@employee.LastName</td>
-                                    <td>@employee.Dob</td>
-                                    <td>@employee.EmployedOn</td>
-                                    <td>@employee.Email</td>
-                                    <td>@employee.Region.RegionName</td>
+                                <tr id="row_@user.Id">
+                                    <td hidden>@user.Id</td>
+                                    <td>@user.UserName</td>
+                                    <td>@user.FirstName</td>
+                                    <td>@user.LastName</td>
+                                    <td>@user.Email</td>
+                                    <td>@user.PhoneNumber</td>
                                     <td>
-                                        @if (@employee.Supervisor != null)
-                                        {
-                                            @*@employee.Supervisor.FirstName <span></span>
-
-            @employee.Supervisor.LastName;*@
-                                            <span>Surbodinate</span>
-                                        }
-                                        else
-                                        {
-                                            <span>Supervisor</span>
-                                        }
-                                    </td>
-
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@employee.EmployeeId">Edit</a> |
-                                        <a  asp-action="Details" asp-route-id="@employee.EmployeeId">Details</a> |
+                                        @*<a  asp-action="Edit" asp-route-id="@user.Id">Edit</a> |*@
+                                        <a  asp-area="Identity" asp-page="/Account/Manage/Index">Edit</a> |
+                                         <a asp-action="Details" asp-route-id="@user.Id">Details</a> |
                                         @* <a id="CallDeleteModal" href="#MyModal" data-toggle="modal">Delete</a>*@
-                                        <a id="CallDeleteModal" href="#" onclick="deleteEmployee(@employee.EmployeeId);">Delete</a>
+                                        <a id="CallDeleteModal" href="#" onclick="deleteUser('@user.Id');">Delete</a>
 
                                     </td>
                                 </tr>
@@ -163,7 +147,7 @@
 
 
 <!--Modal for create Starts-->
-<partial name="AddEmployeePartialView" />
+@*<partial name="AddEmployeePartialView" />*@
 
 <!--Modal ends-->
 <!--Scripts begin-->
@@ -190,50 +174,50 @@
 
     <script>
         //start add employee ajax
-        $('#employeeAddForm').submit(function (e) {
-            e.preventDefault();
-            console.log("Clicked");
-            //alert("okay");
-            $.ajax({
-                url: '/Employee/AddEmployee',
-                type: 'post',
-                dataType: 'json',
-                data: $('#employeeAddForm').serialize(),
+        //$('#employeeAddForm').submit(function (e) {
+        //    e.preventDefault();
+        //    console.log("Clicked");
+        //    //alert("okay");
+        //    $.ajax({
+        //        url: '',
+        //        type: 'post',
+        //        dataType: 'json',
+        //        data: $('#employeeAddForm').serialize(),
 
-                error: function (xhr) {
-                    console.log(xhr.status);
-                    alert("Ooooops! something went wrong!!")
-                },
+        //        error: function (xhr) {
+        //            console.log(xhr.status);
+        //            alert("Ooooops! something went wrong!!")
+        //        },
 
-                success: function (response) {
-                    console.log(response.value)
-                    if (response.key) {
-                        swal({
-                            title: "Success",
-                            text: response.value,
-                            html: true,
-                            type: "success",
-                            showCancelButton: false,
-                            confirmButtonColor: "#06ba63",
-                            confirmButtonText: "OK",
-                            closeOnConfirm: true
-                        })
-                            .then(() => {
-                                window.location.reload()
-                            });
-                    }
-                    else {
-                        swal("Error!", response.value, "error");
-                    }
-                }
-            });
-        }
-        );
+        //        success: function (response) {
+        //            console.log(response.value)
+        //            if (response.key) {
+        //                swal({
+        //                    title: "Success",
+        //                    text: response.value,
+        //                    html: true,
+        //                    type: "success",
+        //                    showCancelButton: false,
+        //                    confirmButtonColor: "#06ba63",
+        //                    confirmButtonText: "OK",
+        //                    closeOnConfirm: true
+        //                })
+        //                    .then(() => {
+        //                        window.location.reload()
+        //                    });
+        //            }
+        //            else {
+        //                swal("Error!", response.value, "error");
+        //            }
+        //        }
+        //    });
+        //}
+        //);
         //End add employee ajax}
     </script>
 }
 <script type="text/javascript">
-        function deleteEmployee(employeeId) {
+        function deleteUser(userId) {
             $(function () {
                 swal({
                     title: "Are you sure?",
@@ -249,8 +233,9 @@
                 }).then((result) => {
                     if (result.value) {
                          $.ajax({
-                             url: '@Url.Action("Delete", "Employee")',
-                             data: { EmployeeId: employeeId },
+                             url: '@Url.Action("Delete", "User")',
+                             
+                             data: { Id: userId },
                              type: 'post',
                              dataType: 'json',
                              success: function (response) {
@@ -295,4 +280,3 @@
             });
         }
 </script>
-

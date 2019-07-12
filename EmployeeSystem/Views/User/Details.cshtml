@@ -1,0 +1,77 @@
+﻿@model EmployeeSystem.Data.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </dt>
+        @if (Model.User.FirstName == null)
+        {
+            <dd>Update with First Name</dd>
+        }
+        else
+        {
+            <dd>
+                @Html.DisplayFor(model => model.User.FirstName)
+            </dd>}
+        <dt>
+            @Html.DisplayNameFor(model => model.User.LastName)
+        </dt>
+        @if (Model.User.LastName == null)
+        {
+            <dd>Update with Last Name</dd>
+        }
+        else
+        {
+            <dd>
+                @Html.DisplayFor(model => model.User.LastName)
+            </dd>
+        }
+            <dt>
+                @Html.DisplayNameFor(model => model.User.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.User.Email)
+            </dd>
+
+
+
+
+
+            <dt>
+                @Html.DisplayNameFor(model => model.User.PhoneNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.User.PhoneNumber)
+            </dd>
+
+
+
+
+            <dt>
+               
+                @Html.DisplayNameFor(model => model.User.IsActive)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.User.IsActive)
+            </dd>
+        </dl>
+</div>
+<div>
+    <a asp-area="Identity" asp-page="/Account/Manage/Index">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

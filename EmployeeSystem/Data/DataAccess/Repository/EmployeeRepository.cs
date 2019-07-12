@@ -23,61 +23,55 @@ namespace EmployeeSystem.Data.DataAccess.Repository
         private UserManager<IdentityUser> userManager;
        
 
-          
+          public void AddEmployee(Employee employee)
+        {
+            Add(employee);
+           
+        }
         
 
-        public KeyValuePair<bool, string> AddNewEmployee(Employee model, string userName)
-        {
-            try
-            {
+        //public KeyValuePair<bool, string> AddNewEmployee(Employee model, string userName)
+        //{
+        //    try
+        //    {
                 
-                Add(model);
-                model.IsActive = true;
-                model.AuditInfo = new AuditInfo
-                {
-                    CreatedBy = userName,
-                    CreatedOn = DateTime.Now,
-                    UpdatedBy = userName,
-                   UpdatedOn = DateTime.Now,
-                    Operation = "INS"
-                };                
+        //        Add(model);
+        //        model.IsActive = true;
+        //        model.AuditInfo = new AuditInfo
+        //        {
+        //            CreatedBy = userName,
+        //            CreatedOn = DateTime.Now,
+        //            UpdatedBy = userName,
+        //           UpdatedOn = DateTime.Now,
+        //            Operation = "INS"
+        //        };                
                 
-                if (model.SupervisorId == 0)
-                {
-                    model.SupervisorId = null;
-                }
+        //        if (model.SupervisorId == 0)
+        //        {
+        //            model.SupervisorId = null;
+        //        }
 
-                return new KeyValuePair<bool, string>(true, "Saved successfully");
-            }
-            catch (Exception ex)
-            {
-                return new KeyValuePair<bool, string>(false, ex.Message);
-            }
-        }
+        //        return new KeyValuePair<bool, string>(true, "Saved successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new KeyValuePair<bool, string>(false, ex.Message);
+        //    }
+        //}
 
-        public List<Employee> GetSubordinates(int id)
-        {
-        
-            var subordinates = FindBy(x => x.SupervisorId == id).Include(a=>a.Supervisor).ToList();
-            return subordinates;
-        }
-        public List<Employee> GetSubordinates()
+
+        public IQueryable<Employee> GetSubordinates()
         {
 
-            var subordinates = FindBy(x => x.SupervisorId != null).ToList();
+            var subordinates = FindBy(x => x.SupervisorId != null);
             return subordinates;
         }
 
-        public int GetEmployeeId(string username)
-        {
-            return FindBy(x => x.FirstName == username).SingleOrDefault().EmployeeId;
-        }
 
         public  void Delete(int id)
         {
 
             var employee = FindBy(m => m.EmployeeId == id).SingleOrDefault();
-           
             employee.IsActive = false;
             
         }
@@ -86,12 +80,13 @@ namespace EmployeeSystem.Data.DataAccess.Repository
         public IQueryable<Employee> GetEmployeeById(int Id)
         {
 
-            return FindBy(m => m.EmployeeId == Id).Include(g => g.Gender)
-                .Include(r => r.Region).Include(s => s.InverseSupervisor).Include(t => t.Title).Where(d => d.IsActive == true)
-                .Include(a=>a.AuditInfo);
-            //return FindBy(m => m.EmployeeId == Id).Include(g => g.Gender)
-            //    .Include(r => r.Region).Include(s => s.InverseSupervisor).Include(t => t.Title).Where(d => d.IsActive == true)
-            //    .Include(a=>a.AuditInfo).Where(d=>d.AuditInfoId == d.AuditInfo.AuditInfoId);
+            return FindBy(m => m.EmployeeId == Id && m.IsActive==true).Include(g => g.Gender)
+                                                    .Include(r => r.Region)
+                                                    .Include(s => s.Supervisor)
+                                                    .Include(t => t.Title)
+                                                   
+                                                    .Include(a=>a.AuditInfo).Where(a=>a.AuditInfoId == a.AuditInfo.AuditInfoId);
+           
         }
 
 
@@ -100,19 +95,29 @@ namespace EmployeeSystem.Data.DataAccess.Repository
             Edit(employee);
         }
 
-     
 
-       
-        public void UpdateEmployee(Employee employee)
-        {
-           // CheckEmployeeExists(employee.EmployeeId);  
-            employee.IsActive = true;
-            //employee.AuditInfo.UpdatedBy = username;
-            //employee.AuditInfo.UpdatedOn = DateTime.Now;
-            //employee.AuditInfo.Operation = "UPD";
 
-            Update(employee);
-        }
+
+        //public void UpdateEmployee(Employee employee)
+        //{
+        //   // CheckEmployeeExists(employee.EmployeeId);  
+        //    employee.IsActive = true;
+        //    //employee.AuditInfo.UpdatedBy = username;
+        //    //employee.AuditInfo.UpdatedOn = DateTime.Now;
+        //    //employee.AuditInfo.Operation = "UPD";
+
+        //    Update(employee);
+        //}
+
+        //public override IQueryable<Employee> GetAll()
+        //{
+        //    return Context.Set<Employee>()
+        //        .Include(a => a.Region)
+        //        .Include(b => b.Gender)
+        //        .Include(c => c.Supervisor)
+        //        .Include(d=>d.AuditInfo)
+        //        .Where(x=>x.IsActive==true);
+        //}
 
         public override IQueryable<Employee> GetAll()
         {
@@ -120,24 +125,28 @@ namespace EmployeeSystem.Data.DataAccess.Repository
                 .Include(a => a.Region)
                 .Include(b => b.Gender)
                 .Include(c => c.Supervisor)
-                .Include(d=>d.AuditInfo)
-                .Where(x=>x.IsActive==true);
+                .Include(d => d.AuditInfo)
+                .Where(x => x.IsActive == true);
         }
-
         public  IQueryable<Employee> GetSupervisors()
         {
-            
-            return Context.Set<Employee>().Where(x=>x.SupervisorId==null && x.IsActive==true);
+            return FindBy(x => x.SupervisorId == null && x.IsActive == true);
+           // return Context.Set<Employee>().Where(x=>x.SupervisorId==null && x.IsActive==true);
                 
         }
         public IQueryable<Employee> GetSurbodinates()
         {
-            return Context.Set<Employee>().Where(x => x.SupervisorId != null && x.IsActive == true);
+            return FindBy(x => x.SupervisorId != null && x.IsActive == true)
+                        .Include(g=>g.Gender)
+                        .Include(m=>m.Title)
+                        .Include(r=>r.Region);
+            //return Context.Set<Employee>().Where(x => x.SupervisorId != null && x.IsActive == true);
 
         }
         public IQueryable<Employee> Audit(int id)
         {
-            var employee =GetEmployeeById(id);
+            var employee = GetEmployeeById(id);
+            
             return employee.Where(m => m.AuditInfoId == m.AuditInfo.AuditInfoId);
         }
 

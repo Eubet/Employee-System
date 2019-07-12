@@ -5,27 +5,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeSystem.Controllers
 {
-    public class SupervisorController : Controller
+    public class SubordinateController : Controller
     {
         readonly EmployeeService employeeService;
 
-        public SupervisorController(EmployeeService _employeeService)
+        public SubordinateController(EmployeeService _employeeService)
         {
             this.employeeService = _employeeService;
         }
 
         public IActionResult Index()
         {
-            var model = new EmployeeViewModel
+            
+            EmployeeViewModel model = new EmployeeViewModel
             {
-                Supervisors = employeeService.unitofWork.employeeRepository.GetSupervisors().ToList(),
-
-                Employees = employeeService.GetAllEmployees().ToList(),
+                Surbodinates = employeeService.unitofWork.employeeRepository.GetSurbodinates().ToList(),
+               // Supervisors = employeeService.unitofWork.employeeRepository.GetSupervisors().ToList(),
+                Employees = employeeService.unitofWork.employeeRepository.GetAll().ToList(),
                 GenderList = employeeService.unitofWork.genderRepository.Populate().ToList(),
                 RegionList = employeeService.unitofWork.regionRepository.Populate().ToList(),
                 TitleList = employeeService.unitofWork.titleRepos.Populate().ToList()
             };
             return View(model);
+         
         }
     }
 }

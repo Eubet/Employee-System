@@ -4,9 +4,9 @@
 
 <!--Page Heading-->
 @*<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-    @*<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>*@
-@*</div>*@
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+    </div>*@
 
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
@@ -59,7 +59,7 @@
 
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
-            <a asp-controller="Surbodinate" asp-action="Index" style="text-decoration: none;">
+            <a asp-controller="Subordinate" asp-action="Index" style="text-decoration: none;">
 
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -84,7 +84,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Audit</div>
-                            <div class="h5 mb-0 font-weight-bolder text-gray-800 ">View Audit Log</div>
+                            <div class="h5 mb-0 font-weight-bolder text-gray-800" style="font-size:30pt; color: aqua;">View Audit Log</div>
                         </div>
                         <div class="col-auto">
                             <i class="fa fa-file-archive fa-2x text-gray-300"></i>
@@ -134,73 +134,33 @@
 </div>
 
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
-
-<script src="~/js/demo/chart-pie-demo.js" type="text/javascript"></script>
 
 
 @section Scripts{
 
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
     <script>
-        function GetChartData() {
-            var supervisors = JSON.stringify('Html.Raw(ViewBag.Supervisor)');
-            var surbodinates = JSON.stringify('Html.Raw(ViewBag.Surbodinates)');
+       
+        // Pie Chart Example
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["Supervisors", "Subordinates"],
+                datasets: [{
+                    labels: ['Supervisors', 'Subordinates'],
+                    data: [@ViewBag.Supervisor ,  @ViewBag.Surbodinates],
+                    backgroundColor: ['#4e73df', '#1cc88a'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673'],
+                     hoverBorderColor: "rgba(234, 236, 244, 1)"
+                }],
+            },
 
-            $.ajax({
-                type: "GET",
-                url: "/Home/Index",
-                data: [supervisors, surbodinates],
-                traditional: true,
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-
-                error: function (xhr) {
-                    console.log(xhr.status);
-                    alert("Ooooops! Something went wrong!!" + xhr.responseText)
-                },
-
-                success: function () {
-                    var ctx = document.getElementById("myPieChart");
-                    var myPieChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-
-                            labels: ["Supervisors", "Surbodinates"],
-                            datasets: [{
-                                //label: "Summary Of Employees",
-                                data: [supervisors, surbodinates],
-                                //url: 'Url.Action("Index", "Home"',
-                                backgroundColor: ['#4e73df', '#1cc88a'],
-                                hoverBackgroundColor: ['#2e59d9', '#17a673'],
-                                hoverBorderColor: "rgba(234, 236, 244, 1)",
-                            }],
-                        },
-                        options: {
-                            maintainAspectRatio: false,
-                            tooltips: {
-                                backgroundColor: "rgb(255,255,255)",
-                                bodyFontColor: "#858796",
-                                borderColor: '#dddfeb',
-                                borderWidth: 1,
-                                xPadding: 15,
-                                yPadding: 15,
-                                displayColors: false,
-                                caretPadding: 10,
-                            },
-                            legend: {
-                                display: false
-                            },
-                            cutoutPercentage: 80,
-                        },
-                    });
+        });
 
 
-                }
-
-
-
-            });
-        }
 
     </script>
 }

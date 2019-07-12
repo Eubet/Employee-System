@@ -14,6 +14,7 @@ namespace EmployeeSystem.Data.UnitOfWork
         private readonly EmployeeMSContext employeeMSContext;
         public EmployeeRepository   employeeRepository { get; private set; }
         public AuditRepository  auditRepository { get; private set; }
+        public UserRepository  userRepository { get; private set; }
       
         public EmployeeService   employeeManager { get; private set; }
         public GenderRepository genderRepository { get; private set; }
@@ -27,6 +28,7 @@ namespace EmployeeSystem.Data.UnitOfWork
             genderRepository = new GenderRepository();
             regionRepository = new RegionRepository();
             titleRepos = new TitleRepo();
+            userRepository = new UserRepository(employeeMSContext);
 
         }
 

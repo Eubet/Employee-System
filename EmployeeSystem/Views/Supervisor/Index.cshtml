@@ -1,7 +1,7 @@
 ﻿@model EmployeeSystem.Data.ViewModels.EmployeeViewModel
 
 @{
-    ViewData["Title"] = "Employees";
+    ViewData["Title"] = "Supervisors";
 }
 
 <!--Reverse Engineer-->
@@ -28,7 +28,7 @@
 <body>
     <div class="card mb-3">
         <div class="card-header">
-            <h2>Employees</h2>
+            <h2>Supervisors</h2>
             <p>
                 <a id="CallCreateModal" href="#newEmployee" data-toggle="modal">Create New</a>
             </p>
@@ -46,7 +46,6 @@
                             <th>Hire Date</th>
                             <th>Email</th>
                             <th>Region</th>
-                            <th>Surbodinates</th>
                             <th></th>
 
                         </tr>
@@ -61,8 +60,7 @@
                             <th>Hire Date</th>
                             <th>Email</th>
                             <th>Region</th>
-                            <th>Surbodinates </th>
-                            <th></th>
+                             <th></th>
 
                         </tr>
                     </tfoot>
@@ -81,19 +79,8 @@
                                     <td>@employee.Email</td>
                                     <td>@employee.Region.RegionName</td>
                                     <td>
-                                        @if (@employee.Supervisor != null)
-                                        {
-                                            @employee.FirstName <span></span>
-
-                                            @employee.LastName;
-
-                                        }
-                                      
-                                    </td>
-
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@employee.EmployeeId">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@employee.EmployeeId">Details</a> |
+                                        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@employee.EmployeeId">Edit</a> |
+                                        <a asp-controller="Employee" asp-action="Details" asp-route-id="@employee.EmployeeId">Details</a> |
                                       
                                         <a id="CallDeleteModal" href="#" onclick="deleteEmployee(@employee.EmployeeId);">Delete</a>
 

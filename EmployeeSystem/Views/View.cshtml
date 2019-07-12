@@ -1,8 +1,11 @@
 ﻿@model EmployeeSystem.Data.ViewModels.EmployeeViewModel
 
 @{
-    ViewData["Title"] = "Employees";
+    ViewData["Title"] = "View";
 }
+
+
+<h2>View</h2>
 
 <!--Reverse Engineer-->
 <head>
@@ -13,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Tables</title>
+    <title>Supervisor - Tables</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -46,7 +49,7 @@
                             <th>Hire Date</th>
                             <th>Email</th>
                             <th>Region</th>
-                            <th>Role</th>
+                            <th>Supervisor</th>
                             <th></th>
 
                         </tr>
@@ -61,13 +64,13 @@
                             <th>Hire Date</th>
                             <th>Email</th>
                             <th>Region</th>
-                            <th>Role</th>
+                            <th>Supervisor </th>
                             <th></th>
 
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach (var employee in Model.Employees)
+                        @foreach (var employee in Model.Surbodinates)
                         {
                             if (employee.IsActive == true)
                             {
@@ -81,23 +84,23 @@
                                     <td>@employee.Email</td>
                                     <td>@employee.Region.RegionName</td>
                                     <td>
-                                        @if (@employee.Supervisor != null)
+                                        @foreach (var supervisor in Model.Supervisors)
                                         {
-                                            @*@employee.Supervisor.FirstName <span></span>
 
-            @employee.Supervisor.LastName;*@
-                                            <span>Surbodinate</span>
+                                            if (supervisor.EmployeeId == @employee.SupervisorId)
+                                            {
+                                                @supervisor.FirstName <span></span> @supervisor.LastName;
+
+                                            }
+
                                         }
-                                        else
-                                        {
-                                            <span>Supervisor</span>
-                                        }
+
                                     </td>
 
                                     <td>
-                                        <a asp-action="Edit" asp-route-id="@employee.EmployeeId">Edit</a> |
-                                        <a  asp-action="Details" asp-route-id="@employee.EmployeeId">Details</a> |
-                                        @* <a id="CallDeleteModal" href="#MyModal" data-toggle="modal">Delete</a>*@
+                                        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@employee.EmployeeId">Edit</a> |
+                                        <a asp-controller="Employee" asp-action="Details" asp-route-id="@employee.EmployeeId">Details</a> |
+
                                         <a id="CallDeleteModal" href="#" onclick="deleteEmployee(@employee.EmployeeId);">Delete</a>
 
                                     </td>
@@ -159,7 +162,6 @@
     }
 </style>
 <div class="se-pre-con" style="visibility:hidden; opacity:0.7;"></div>
-
 
 
 <!--Modal for create Starts-->
@@ -295,4 +297,3 @@
             });
         }
 </script>
-

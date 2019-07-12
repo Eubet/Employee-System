@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
+<head> 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,7 +28,7 @@
     <div id="wrapper">
 
         <!--Sidebar - brand-->
-        <ul class="sidebar navbar-nav">
+        <ul class="sidebar navbar-nav my-0">
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
@@ -38,38 +38,44 @@
                 </a>
             </li>
             <!-- Divider -->
-            <hr class="sidebar-divider">
+            @*<hr class="sidebar-divider" style="color:white;">*@
 
+        <div style="color:aliceblue;">
+            <hr class="sidebar-divider" style="color:white;">
+            <li class="nav-item ">  Manage Employees</li>
+            <hr class="sidebar-divider" style="color:white;"></div>
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item">
+           
+               
+                <a class="nav-link" aria-haspopup="true" aria-expanded="true" asp-controller="Employee" asp-action="Index">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Manage Employees</span>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-                    <a class="dropdown-item" asp-controller="Employee" asp-action="Index">
-                    <i class="fas fa-people-carry"></i>
                     <span>Employees</span>
-                    </a> 
-                    <a class="dropdown-item" asp-controller="Supervisor" asp-action="Index">
-                    <i class="fas fa-people-carry"></i>
-                    <span>Supervisors</span>
-                    </a>
-                    <a class="dropdown-item" asp-controller="Audit" asp-action="Index">
-                    <i class="fas fa-file"></i>
-                    <span>Audit Information</span>
-                    </a>
-                </div>
+                </a>
                 
+                    <a class="nav-link" asp-controller="Supervisor" asp-action="Index">
+                        <i class="fas fa-people-carry"></i>
+                        <span>Supervisors</span>
+                    </a>
+                    <a class="nav-link" asp-controller="Subordinate" asp-action="Index">
+                        <i class="fas fa-people-carry"></i>
+                        <span>Subordinates</span>
+                    </a>
+                    <a class="nav-link" asp-controller="Audit" asp-action="Index">
+                        <i class="fas fa-file"></i>
+                        <span>Audit Information</span>
+                    </a>
+                
+
 
             </li>
 
             <hr class="sidebar-divider">
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" asp-controller="" asp-action="">
+                <a class="nav-link collapsed" asp-controller="User" asp-action="Index">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Support</span>
+                    <span>View Users</span>
                 </a>
 
             </li>

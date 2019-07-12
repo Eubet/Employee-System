@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeSystem.Data.DataAccess
 {
@@ -29,7 +26,7 @@ namespace EmployeeSystem.Data.DataAccess
         public virtual DbSet<Region> Region { get; set; }
         public virtual DbSet<Title> Title { get; set; }
         public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
-        public virtual DbSet<IdentityUserClaim<string>> IdentityUserClaim { get; set; }
+        //public virtual DbSet<IdentityUserClaim<string>> IdentityUserClaim { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -43,6 +40,7 @@ namespace EmployeeSystem.Data.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
             {
                 entity.HasIndex(e => e.RoleId);

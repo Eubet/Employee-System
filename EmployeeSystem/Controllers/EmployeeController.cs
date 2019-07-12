@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using EmployeeSystem.BusinessLayer;
+using EmployeeSystem.Data.DataAccess;
 using EmployeeSystem.Data.UnitOfWork;
 using EmployeeSystem.Data.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -16,11 +17,11 @@ namespace EmployeeSystem.Controllers
         
         private readonly UnitOfWork unitofWork;
         readonly EmployeeService employeeService;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
       
 
-        public EmployeeController(IUnitOfWork _unitofWork, EmployeeService _employeeService, UserManager<IdentityUser> _userManager)
+        public EmployeeController(IUnitOfWork _unitofWork, EmployeeService _employeeService, UserManager<ApplicationUser> _userManager)
         {
             unitofWork = _unitofWork as UnitOfWork;
             userManager = _userManager;
@@ -38,7 +39,7 @@ namespace EmployeeSystem.Controllers
                 return View();
                 
             }
-            var result = unitofWork.employeeRepository.AddNewEmployee(model.Employee, userName);
+            var result = employeeService.AddNewEmployee(model.Employee, userName);
             var saveResult = unitofWork.CommitAll();
             return  Json(result);
         }
@@ -54,7 +55,8 @@ namespace EmployeeSystem.Controllers
                 Employee = unitofWork.employeeRepository.GetEmployeeById(id).FirstOrDefault(),
                 GenderList = unitofWork.genderRepository.Populate().ToList(),
                 RegionList = unitofWork.regionRepository.Populate().ToList(),
-                TitleList = unitofWork.titleRepos.Populate().ToList()
+                TitleList = unitofWork.titleRepos.Populate().ToList(),
+                
 
             };
             
@@ -67,7 +69,7 @@ namespace EmployeeSystem.Controllers
             string userName = userManager.GetUserName(HttpContext.User);
 
             
-            unitofWork.employeeRepository.UpdateEmployee(employeeViewModel.Employee);
+            employeeService.UpdateEmployee(employeeViewModel.Employee, userName);
                 var saveResult = unitofWork.CommitAll();
 
                 return  RedirectToAction(nameof(Index));
@@ -84,18 +86,25 @@ namespace EmployeeSystem.Controllers
 
         public IActionResult Details(int id)
         {
-            var model = new EmployeeViewModel
-            {
 
-                Employee = unitofWork.employeeRepository.GetEmployeeById(id).FirstOrDefault(),
-                //AuditLog = unitofWork.employeeRepository.Audit(id).FirstOrDefault(),
-                Audit = unitofWork.employeeRepository.Audit(id).FirstOrDefault(),
-                Surbodinates = unitofWork.employeeRepository.GetSubordinates().ToList(),
-                Supervisors = unitofWork.employeeRepository.GetSupervisors().ToList(),
-                //Employees = unitofWork.employeeRepository.GetAll().ToList()
-                
-            };
-           
+            var model = employeeService.GetEmployeeDetails(id);
+            model.Employee = employeeService.GetEmployeeById(id);
+           // model.Employee  = unitofWork.employeeRepository.GetEmployeeById(id).FirstOrDefault();
+            model.Supervisors = unitofWork.employeeRepository.GetSupervisors().ToList();
+            model.Surbodinates = unitofWork.employeeRepository.GetSubordinates().ToList();
+            //var model = new EmployeeViewModel
+            //{
+
+            //    Employee = unitofWork.employeeRepository.GetEmployeeById(id).FirstOrDefault(),
+            //    //AuditLog = unitofWork.employeeRepository.Audit(id).FirstOrDefault(),
+
+            //    //Audit = unitofWork.employeeRepository.Audit(id).FirstOrDefault(),
+            //    Surbodinates = unitofWork.employeeRepository.GetSubordinates().ToList(),
+            //    Supervisors = unitofWork.employeeRepository.GetSupervisors().ToList(),
+            //    //Employees = unitofWork.employeeRepository.GetAll().ToList()
+
+            //};
+
             return View(model);
         }
 
@@ -105,11 +114,12 @@ namespace EmployeeSystem.Controllers
 
             EmployeeViewModel model = new EmployeeViewModel()
             {
-                Employees = unitofWork.employeeRepository.GetAll().ToList(),
+                Employees = employeeService.GetAllEmployees(),
+               // Employees = unitofWork.employeeRepository.GetAll().ToList(),
 
-                GenderList = unitofWork.genderRepository.Populate().ToList(),
-                RegionList = unitofWork.regionRepository.Populate().ToList(),
-                TitleList = unitofWork.titleRepos.Populate().ToList()
+                GenderList = employeeService.PopulateGender(),
+                RegionList = employeeService.PopulateRegion(),
+                TitleList = employeeService.PopulateTitle()
             };
             
             return View(model);

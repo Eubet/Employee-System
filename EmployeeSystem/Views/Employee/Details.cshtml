@@ -101,10 +101,10 @@
                             <dt>Subordinates</dt>
                             foreach (var subordinate in Model.Surbodinates)
                             {
-                                // if (subordinate.SupervisorId == subordinate.EmployeeId)
-                                // {
+                                if (subordinate.SupervisorId == Model.EmployeeId)
+                                 {
                                 <dd>@subordinate.FirstName&nbsp;@subordinate.LastName</dd>
-                                // }
+                                 }
 
                             }
 
@@ -118,23 +118,23 @@
                 <tr>
                     <td>
                         <dt>Created By</dt>
-                        <dd>@Html.DisplayFor(model => model.Audit.AuditInfo.CreatedBy)</dd>
+                        <dd>@Html.DisplayFor(model => model.CreatedBy)</dd>
                        
 
                     </td>
                     <td>
                         <dt>Created On</dt>
-                        <dd>@Html.DisplayFor(model => model.Audit.AuditInfo.CreatedOn)</dd>
+                        <dd>@Html.DisplayFor(model => model.CreatedOn)</dd>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <dt>Updated By</dt>
-                        <dd>@Html.DisplayFor(model => model.Audit.AuditInfo.UpdatedBy)</dd>
+                        <dd>@Html.DisplayFor(model => model.UpdatedBy)</dd>
                     </td>
                     <td>
                         <dt>Updated On</dt>
-                        <dd>@Html.DisplayFor(model => model.Audit.AuditInfo.UpdatedOn)</dd>
+                        <dd>@Html.DisplayFor(model => model.UpdatedOn)</dd>
                     </td>
 
 
