@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmployeeSystem.BusinessLayer;
 using EmployeeSystem.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeSystem.Controllers
 {
+    [Authorize]
     public class AuditController : Controller
     {
         readonly EmployeeService employeeService;

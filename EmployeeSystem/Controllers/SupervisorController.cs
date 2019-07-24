@@ -1,10 +1,12 @@
 ﻿using System.Linq;
 using EmployeeSystem.BusinessLayer;
 using EmployeeSystem.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeSystem.Controllers
 {
+    [Authorize]
     public class SupervisorController : Controller
     {
         readonly EmployeeService employeeService;

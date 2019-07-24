@@ -45,7 +45,7 @@ namespace EmployeeSystem
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            //  services.AddIdentity<ApplicationUser, IdentityRole>()
+            // services.AddIdentity<ApplicationUser, ApplicationRole>()
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             //services.AddIdentityCore<IdentityUser>()

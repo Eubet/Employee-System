@@ -5,13 +5,14 @@ using EmployeeSystem.BusinessLayer;
 using EmployeeSystem.Data.DataAccess;
 using EmployeeSystem.Data.UnitOfWork;
 using EmployeeSystem.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeSystem.Controllers
 {
-
+    [Authorize]
     public class EmployeeController : Controller
     {
         
@@ -92,18 +93,7 @@ namespace EmployeeSystem.Controllers
            // model.Employee  = unitofWork.employeeRepository.GetEmployeeById(id).FirstOrDefault();
             model.Supervisors = unitofWork.employeeRepository.GetSupervisors().ToList();
             model.Surbodinates = unitofWork.employeeRepository.GetSubordinates().ToList();
-            //var model = new EmployeeViewModel
-            //{
-
-            //    Employee = unitofWork.employeeRepository.GetEmployeeById(id).FirstOrDefault(),
-            //    //AuditLog = unitofWork.employeeRepository.Audit(id).FirstOrDefault(),
-
-            //    //Audit = unitofWork.employeeRepository.Audit(id).FirstOrDefault(),
-            //    Surbodinates = unitofWork.employeeRepository.GetSubordinates().ToList(),
-            //    Supervisors = unitofWork.employeeRepository.GetSupervisors().ToList(),
-            //    //Employees = unitofWork.employeeRepository.GetAll().ToList()
-
-            //};
+           
 
             return View(model);
         }

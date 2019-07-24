@@ -6,11 +6,13 @@ using EmployeeSystem.BusinessLayer;
 using EmployeeSystem.Data.DataAccess;
 using EmployeeSystem.Data.UnitOfWork;
 using EmployeeSystem.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeSystem.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly UnitOfWork unitofWork;
